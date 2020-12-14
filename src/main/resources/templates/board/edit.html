@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit announcement</title>
+</head>
+<body>
+<form th:method="PATCH" th:action="@{/board/{id}(id=${ann.getId()})}" th:object="${ann}">
+    <label for="author">Author:</label>
+    <input type="text" th:field="*{author}" id="author" />
+    <br/>
+
+    <label for="authorEmail">E-mail:</label>
+    <input type="text" th:field="*{authorEmail}" id="authorEmail" />
+    <br/>
+
+    <label for="content">Enter your announcement:</label>
+    <input type="text" th:field="*{content}" id="content" />
+    <br/>
+
+    <input type="submit" value="Update!">
+</form>
+</body>
+</html>

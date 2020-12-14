@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Announcement</title>
+</head>
+<body>
+    <p th:text="${ann.getAuthor()}"></p>
+    <p th:text="${ann.getAuthorEmail()}"></p>
+    <p th:text="${ann.getContent()}"></p>
+    <hr/>
+
+    <a th:href="@{/board/{id}/edit(id=${ann.getId()})}">Edit announcement...</a>
+
+    <form th:method="DELETE" th:action="@{/board/{id}(id=${ann.getId()})}">
+        <input type="submit" value="Delete!">
+    </form>
+</body>
+</html>
