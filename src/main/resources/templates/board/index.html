@@ -2,13 +2,18 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Board of announcements</title>
+    <title>Bulletin board | Main</title>
+    <h1>Bulletin board</h1>
+    <style>
+        h1 {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-
 <div th:each="ann : ${announcements}">
-    <p th:text="${ann.getAuthor()}"></p>
-    <p th:text="${ann.getAuthorEmail()}"></p>
+    <h4 th:text="${ann.getAuthor()}"></h4>
+    <h4 th:text="${ann.getAuthorEmail()}"></h4>
     <p th:text="${ann.getContent()}"></p>
     <a th:href="@{/board/{id}(id=${ann.getId()})}">Manage...</a>
     <hr/>

@@ -2,18 +2,52 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Announcement</title>
+    <title>Bulletin board | Announcement</title>
+    <h2 th:text="Announcement + ' ' + ${ann.getId()}"></h2>
+    <style>
+        h2 {
+            text-align: center;
+        }
+        #wrapper {
+            width: 350px;
+            overflow: hidden;
+        }
+        #first {
+            width: 100px;
+            float: left;
+        }
+        #second {
+            width: 100px;
+            float: left;
+        }
+        #third {
+            width: 100px;
+            overflow: hidden;
+        }
+    </style>
 </head>
 <body>
-    <p th:text="${ann.getAuthor()}"></p>
-    <p th:text="${ann.getAuthorEmail()}"></p>
+    <h4 th:text="${ann.getAuthor()}"></h4>
+    <h4 th:text="${ann.getAuthorEmail()}"></h4>
     <p th:text="${ann.getContent()}"></p>
     <hr/>
 
-    <a th:href="@{/board/{id}/edit(id=${ann.getId()})}">Edit announcement...</a>
-
-    <form th:method="DELETE" th:action="@{/board/{id}(id=${ann.getId()})}">
-        <input type="submit" value="Delete!">
-    </form>
+    <div id="wrapper">
+        <div id="first">
+            <form th:method="GET" th:action="@{/board/{id}/edit(id=${ann.getId()})}">
+                <input type="submit" value="Edit text!">
+            </form>
+        </div>
+        <div id="second">
+            <form th:method="DELETE" th:action="@{/board/{id}(id=${ann.getId()})}">
+                <input type="submit" value="Delete!">
+            </form>
+        </div>
+        <div id="third">
+            <form th:method="GET" th:action="@{/board}">
+                <input type="submit" value="Back to list!">
+            </form>
+        </div>
+    </div>
 </body>
 </html>

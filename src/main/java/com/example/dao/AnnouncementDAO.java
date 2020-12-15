@@ -18,10 +18,13 @@ import java.util.List;
 @Component
 public class AnnouncementDAO {
     private Connection connection;
+    private final String tableName;
 
     public AnnouncementDAO(@Value("${database.url}") String url,
                            @Value("${database.username}") String username,
-                           @Value("${database.password}") String password) {
+                           @Value("${database.password}") String password,
+                           @Value("${database.tablename}") String tableName) {
+        this.tableName = tableName;
         try {
             Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection(url, username, password);
@@ -34,7 +37,7 @@ public class AnnouncementDAO {
         ArrayList<Announcement> announcements = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM announcements");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM " + tableName);
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String author = resultSet.getString("author");
@@ -50,7 +53,7 @@ public class AnnouncementDAO {
     }
 
     public Announcement show(int id) {
-        String req = "SELECT * FROM announcements WHERE id=" + id;
+        String req = "SELECT * FROM " + tableName +" WHERE id=" + id;
         Announcement announcement = null;
         try {
             Statement statement = connection.createStatement();
@@ -73,7 +76,7 @@ public class AnnouncementDAO {
     }
 
     public void save(Announcement announcement) {
-        String req = "INSERT INTO announcements (author, email, content) VALUES ("
+        String req = "INSERT INTO " + tableName +" (author, email, content) VALUES ("
                 + "'"+ announcement.getAuthor() + "', '"
                 + announcement.getAuthorEmail() + "', '"
                 + announcement.getContent() + "')";
@@ -87,10 +90,8 @@ public class AnnouncementDAO {
 
     public void update(Announcement announcement,
                        int id) {
-        String req= "UPDATE announcements SET author='"
-                + announcement.getAuthor() + "', email='"
-                + announcement.getAuthorEmail() + "', content='" + announcement.getContent()
-                + "' WHERE id=" + id;
+        String req= "UPDATE " + tableName +" SET content='"
+                + announcement.getContent() + "' WHERE id=" + id;
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(req);
@@ -100,7 +101,7 @@ public class AnnouncementDAO {
     }
 
     public void delete(int id) {
-        String req = "DELETE FROM announcements WHERE id=" + id;
+        String req = "DELETE FROM " + tableName + " WHERE id=" + id;
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(req);

@@ -2,26 +2,49 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Edit announcement</title>
+    <title>Bulletin board | Edit</title>
+    <h2>Edit announcement</h2>
+    <style>
+        h1 {
+            text-align: center;
+        }
+        #content {
+            height:75px;
+        }
+    </style>
 </head>
 <body>
-<form th:method="PATCH" th:action="@{/board/{id}(id=${ann.getId()})}" th:object="${ann}">
-    <label for="author">Author:</label>
-    <input type="text" th:field="*{author}" id="author" />
-    <div style="color:red" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></div>
+    <form th:method="PATCH" th:action="@{/board/{id}(id=${ann.getId()})}" th:object="${ann}">
+        <div>
+            <label for="author">Author:</label>
+        </div>
+        <div>
+            <input style="background-color:grey;"
+                   type="text" th:field="*{author}" id="author" readonly/>
+        </div>
+        <br/>
+        <div>
+            <label for="authorEmail">E-mail:</label>
+        </div>
+        <div>
+            <input style="background-color:grey;"
+                   type="text" th:field="*{authorEmail}" id="authorEmail" readonly/>
+        </div>
+        <br/>
+        <div>
+            <label for="content">Edit:</label>
+        </div>
+        <div>
+            <textarea id="content" th:field="*{content}" rows="4" cols="50"></textarea>
+            <div style="color:red"
+                 th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></div>
+        </div>
+        <br/>
+        <input type="submit" value="Update!">
+    </form>
     <br/>
-
-    <label for="authorEmail">E-mail:</label>
-    <input type="text" th:field="*{authorEmail}" id="authorEmail" />
-    <div style="color:red" th:if="${#fields.hasErrors('authorEmail')}" th:errors="*{authorEmail}"></div>
-    <br/>
-
-    <label for="content">Enter your announcement:</label>
-    <input type="text" th:field="*{content}" id="content" />
-    <div style="color:red" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></div>
-    <br/>
-
-    <input type="submit" value="Update!">
-</form>
+    <form th:method="GET" th:action="@{/board/{id}(id=${ann.getId()})}">
+        <input type="submit" value="Cancel!">
+    </form>
 </body>
 </html>

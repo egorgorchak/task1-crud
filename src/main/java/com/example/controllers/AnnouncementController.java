@@ -69,7 +69,7 @@ public class AnnouncementController {
     public String update(@ModelAttribute("ann") @Valid Announcement announcement,
                          BindingResult bindingResult,
                          @PathVariable("id") int id) {
-        if (bindingResult.hasErrors()) {
+        if (bindingResult.hasFieldErrors("content")) {
             return "board/edit";
         }
         announcementDAO.update(announcement, id);
