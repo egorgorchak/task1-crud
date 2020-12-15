@@ -1,10 +1,12 @@
 package com.example.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -15,8 +17,12 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 @Configuration
 @EnableWebMvc
 @ComponentScan("com.example")
+@PropertySource("classpath:application.properties")
 public class SpringConfiguration implements WebMvcConfigurer {
-	private ApplicationContext applicationContext;
+	private final ApplicationContext applicationContext;
+
+	@Value("${templateResolver.prefix}")
+	private String templateResolverPrefix;
 
 	@Autowired
 	public SpringConfiguration(ApplicationContext applicationContext) {
@@ -27,7 +33,7 @@ public class SpringConfiguration implements WebMvcConfigurer {
 	public SpringResourceTemplateResolver templateResolver() {
 		SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
 		templateResolver.setApplicationContext(applicationContext);
-		templateResolver.setPrefix("/templates/");
+		templateResolver.setPrefix(templateResolverPrefix);
 		templateResolver.setSuffix(".html");
 		return templateResolver;
 	}

@@ -8,14 +8,17 @@
     <form th:method="POST" th:action="@{/board}" th:object="${announcement}">
         <label for="author">Author:</label>
         <input type="text" th:field="*{author}" id="author" />
+        <div style="color:red" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></div>
         <br/>
 
         <label for="authorEmail">E-mail:</label>
         <input type="text" th:field="*{authorEmail}" id="authorEmail" />
+        <div style="color:red" th:if="${#fields.hasErrors('authorEmail')}" th:errors="*{authorEmail}"></div>
         <br/>
 
         <label for="content">Enter your announcement:</label>
         <input type="text" th:field="*{content}" id="content" />
+        <div style="color:red" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></div>
         <br/>
 
         <input type="submit" value="Create!">

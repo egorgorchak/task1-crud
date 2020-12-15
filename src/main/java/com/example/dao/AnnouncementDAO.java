@@ -4,6 +4,7 @@ package com.example.dao;
  * */
 
 import com.example.model.Announcement;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
@@ -16,22 +17,16 @@ import java.util.List;
 
 @Component
 public class AnnouncementDAO {
+    private Connection connection;
 
-    private static final String URL = "jdbc:postgresql://localhost:5432/crudtask1";
-    private static final String USER_NAME = "postgres";
-    private static final String PASSWORD = "postgres";
-    private static Connection connection;
-
-    static {
+    public AnnouncementDAO(@Value("${database.url}") String url,
+                           @Value("${database.username}") String username,
+                           @Value("${database.password}") String password) {
         try {
             Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
+            connection = DriverManager.getConnection(url, username, password);
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
-        }
-        try {
-            connection = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
     }
 
@@ -39,7 +34,7 @@ public class AnnouncementDAO {
         ArrayList<Announcement> announcements = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM ANNOUNCEMENTS");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM announcements");
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String author = resultSet.getString("author");
@@ -55,7 +50,7 @@ public class AnnouncementDAO {
     }
 
     public Announcement show(int id) {
-        String req = "select * from announcements where id=" + id;
+        String req = "SELECT * FROM announcements WHERE id=" + id;
         Announcement announcement = null;
         try {
             Statement statement = connection.createStatement();
@@ -71,11 +66,14 @@ public class AnnouncementDAO {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        if (announcement == null) {
+            throw new RuntimeException("Specific announcement is not find!");
+        }
         return announcement;
     }
 
     public void save(Announcement announcement) {
-        String req = "INSERT INTO ANNOUNCEMENTS (author, email, content) values ("
+        String req = "INSERT INTO announcements (author, email, content) VALUES ("
                 + "'"+ announcement.getAuthor() + "', '"
                 + announcement.getAuthorEmail() + "', '"
                 + announcement.getContent() + "')";
@@ -89,10 +87,10 @@ public class AnnouncementDAO {
 
     public void update(Announcement announcement,
                        int id) {
-        String req= "update announcements set author='"
+        String req= "UPDATE announcements SET author='"
                 + announcement.getAuthor() + "', email='"
                 + announcement.getAuthorEmail() + "', content='" + announcement.getContent()
-                + "' where id=" + id;
+                + "' WHERE id=" + id;
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(req);
@@ -102,7 +100,7 @@ public class AnnouncementDAO {
     }
 
     public void delete(int id) {
-        String req = "delete from announcements where id=" + id;
+        String req = "DELETE FROM announcements WHERE id=" + id;
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(req);

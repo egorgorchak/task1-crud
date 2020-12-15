@@ -8,19 +8,22 @@ import com.example.model.Announcement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
 @RequestMapping("/board")
 public class AnnouncementController {
-    private AnnouncementDAO announcementDAO;
+    private final AnnouncementDAO announcementDAO;
 
     @Autowired
     public AnnouncementController(AnnouncementDAO announcementDAO) {
@@ -42,13 +45,16 @@ public class AnnouncementController {
     }
 
     @GetMapping("/new")
-    public String newAnnouncement(Model model, Announcement announcement) {
-        model.addAttribute("announcement", announcement);
+    public String newAnnouncement(@ModelAttribute("announcement") Announcement announcement) {
         return "board/new";
     }
 
     @PostMapping
-    public String create(Announcement announcement) {
+    public String create(@ModelAttribute("announcement") @Valid Announcement announcement,
+                         BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "board/new";
+        }
         announcementDAO.save(announcement);
         return "redirect:/board";
     }
@@ -60,10 +66,12 @@ public class AnnouncementController {
     }
 
     @PatchMapping("/{id}")
-    public String update(Announcement announcement,
-                         @PathVariable("id") int id,
-                         Model model) {
-        model.addAttribute("ann", announcement);
+    public String update(@ModelAttribute("ann") @Valid Announcement announcement,
+                         BindingResult bindingResult,
+                         @PathVariable("id") int id) {
+        if (bindingResult.hasErrors()) {
+            return "board/edit";
+        }
         announcementDAO.update(announcement, id);
         return "redirect:/board";
     }
