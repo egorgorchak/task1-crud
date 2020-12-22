@@ -34,17 +34,17 @@
 
     <div id="wrapper">
         <div id="first">
-            <form th:method="GET" th:action="@{/board/{id}/edit(id=${ann.getId()})}">
+            <form th:method="GET" th:action="@{/{id}/edit(id=${ann.getId()})}">
                 <input type="submit" value="Edit text!">
             </form>
         </div>
         <div id="second">
-            <form th:method="DELETE" th:action="@{/board/{id}(id=${ann.getId()})}">
+            <form th:method="DELETE" th:action="@{/{id}(id=${ann.getId()})}">
                 <input type="submit" value="Delete!">
             </form>
         </div>
         <div id="third">
-            <form th:method="GET" th:action="@{/board}">
+            <form th:method="GET" th:action="@{/}">
                 <input type="submit" value="Back to list!">
             </form>
         </div>

@@ -15,11 +15,11 @@
     <h4 th:text="${ann.getAuthor()}"></h4>
     <h4 th:text="${ann.getAuthorEmail()}"></h4>
     <p th:text="${ann.getContent()}"></p>
-    <a th:href="@{/board/{id}(id=${ann.getId()})}">Manage...</a>
+    <a th:href="@{/{id}(id=${ann.getId()})}">Manage...</a>
     <hr/>
 </div>
 
-<a href="/board/new">Create new announcement</a>
+<a href="/new">Create new announcement</a>
 
 </body>
 </html>

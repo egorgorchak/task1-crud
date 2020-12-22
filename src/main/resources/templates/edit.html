@@ -2,8 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Bulletin board | New Announcement</title>
-    <h1>Create new announcement</h1>
+    <title>Bulletin board | Edit</title>
+    <h2>Edit announcement</h2>
     <style>
         h1 {
             text-align: center;
@@ -14,28 +14,25 @@
     </style>
 </head>
 <body>
-    <form th:method="POST" th:action="@{/board}" th:object="${announcement}">
+    <form th:method="PATCH" th:action="@{/{id}(id=${ann.getId()})}" th:object="${ann}">
         <div>
             <label for="author">Author:</label>
         </div>
         <div>
-            <input type="text" th:field="*{author}" id="author" />
-            <div style="color:red"
-                 th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></div>
+            <input style="background-color:grey;"
+                   type="text" th:field="*{author}" id="author" readonly/>
         </div>
         <br/>
         <div>
             <label for="authorEmail">E-mail:</label>
         </div>
         <div>
-            <input type="text" th:field="*{authorEmail}" id="authorEmail" />
-            <div style="color:red"
-                 th:if="${#fields.hasErrors('authorEmail')}" th:errors="*{authorEmail}"></div>
+            <input style="background-color:grey;"
+                   type="text" th:field="*{authorEmail}" id="authorEmail" readonly/>
         </div>
         <br/>
-
         <div>
-            <label for="content">Enter your announcement:</label>
+            <label for="content">Edit:</label>
         </div>
         <div>
             <textarea id="content" th:field="*{content}" rows="4" cols="50"></textarea>
@@ -43,7 +40,11 @@
                  th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></div>
         </div>
         <br/>
-        <input type="submit" value="Create!">
+        <input type="submit" value="Update!">
+    </form>
+    <br/>
+    <form th:method="GET" th:action="@{/{id}(id=${ann.getId()})}">
+        <input type="submit" value="Cancel!">
     </form>
 </body>
 </html>

@@ -3,27 +3,33 @@ package com.example.model;
  * Created by Laptev Egor 12/14/2020
  * */
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+@Entity
+@Table(name = "announcements")
 public class Announcement {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @NotEmpty(message = "Name shouldn't be empty")
-    @Size(min = 1, max = 25, message = "Name should be between 2 and 30 characters")
+    @Column(name = "author")
     private String author;
 
-    @Email(message = "Not valid email!")
-    @NotEmpty(message = "Email shouldn't be empty")
+    @Column(name = "email")
     private String authorEmail;
 
-    @Size(min = 2, message = "Announcement is too short!")
-    @NotEmpty(message = "Announcement shouldn't be empty")
+    @Column(name = "content")
     private String content;
 
-    public Announcement(int id, String author, String authorEmail, String content) {
-        this.id = id;
+    public Announcement(String author, String authorEmail, String content) {
         this.author = author;
         this.authorEmail = authorEmail;
         this.content = content;
@@ -56,11 +62,11 @@ public class Announcement {
         this.content = content;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }
