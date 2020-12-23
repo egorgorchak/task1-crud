@@ -6,10 +6,7 @@ package com.example.service;
 import com.example.model.Announcement;
 import com.example.repository.AnnouncementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class AnnouncementService {
@@ -24,8 +21,8 @@ public class AnnouncementService {
         return repository.findAll();
     }
 
-    public Optional<Announcement> getAnnouncementById(Long id) {
-        return repository.findById(id);
+    public Announcement getAnnouncementById(Long id) {
+        return repository.findById(id).get();
     }
 
     public Announcement saveAnnouncement(Announcement announcement) {
@@ -36,8 +33,9 @@ public class AnnouncementService {
         repository.deleteById(id);
     }
 
-    public void updateAnnouncement(Long id) {
+    public void updateAnnouncement(Announcement announcement, Long id) {
         Announcement announcementToUpdate = repository.getOne(id);
-
+        announcementToUpdate.setContent(announcement.getContent());
+        repository.save(announcementToUpdate);
     }
 }

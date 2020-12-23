@@ -21,12 +21,17 @@ public class Announcement {
     private Long id;
 
     @Column(name = "author")
+    @NotEmpty(message = "Name shouldn't be empty!")
+    @Size(min = 2)
     private String author;
 
     @Column(name = "email")
+    @Email
     private String authorEmail;
 
     @Column(name = "content")
+    @NotEmpty(message = "Content shouldn't be empty!")
+    @Size(min = 3)
     private String content;
 
     public Announcement(String author, String authorEmail, String content) {

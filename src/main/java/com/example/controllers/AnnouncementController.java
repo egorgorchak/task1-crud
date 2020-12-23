@@ -9,14 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -39,7 +35,7 @@ public class AnnouncementController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Long id, Model model) {
-        Announcement announcement = service.getAnnouncementById(id).get();
+        Announcement announcement = service.getAnnouncementById(id);
         model.addAttribute("ann", announcement);
         return "show";
     }
@@ -65,20 +61,20 @@ public class AnnouncementController {
         return "edit";
     }
 
-    @PatchMapping("/{id}")
+    @PostMapping("/update/{id}")
     public String update(@ModelAttribute("ann") @Valid Announcement announcement,
                          BindingResult bindingResult,
-                         @PathVariable("id") int id) {
+                         @PathVariable("id") Long id) {
         if (bindingResult.hasFieldErrors("content")) {
-            return "board/edit";
+            return "edit";
         }
-//        announcementDAO.update(announcement, id);
-        return "redirect:/board";
+        service.updateAnnouncement(announcement, id);
+        return "redirect:/";
     }
 
-    @DeleteMapping("/{id}")
+    @GetMapping("/delete/{id}")
     public String delete(@PathVariable("id") Long id) {
         service.deleteAnnouncement(id);
-        return "redirect:/board";
+        return "redirect:/";
     }
 }

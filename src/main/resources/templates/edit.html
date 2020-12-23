@@ -14,7 +14,7 @@
     </style>
 </head>
 <body>
-    <form th:method="PATCH" th:action="@{/{id}(id=${ann.getId()})}" th:object="${ann}">
+    <form th:method="POST" th:action="@{/update/{id}(id=${ann.getId()})}" th:object="${ann}">
         <div>
             <label for="author">Author:</label>
         </div>

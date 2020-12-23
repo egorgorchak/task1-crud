@@ -39,7 +39,7 @@
             </form>
         </div>
         <div id="second">
-            <form th:method="DELETE" th:action="@{/{id}(id=${ann.getId()})}">
+            <form th:method="GET" th:action="@{/delete/{id}(id=${ann.getId()})}">
                 <input type="submit" value="Delete!">
             </form>
         </div>
